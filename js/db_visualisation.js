@@ -234,21 +234,7 @@ function visualise_schema(schema_name)
         data: {
             action: 'GetJson', 
             selected_schema: schema_name
-//            products_sort_selected: products_sort_selected,
-//            products_offset_selected: products_offset_selected,
-//            products_limit_selected: products_limit_selected,
-//            fixed_filter: '<?php echo isset($fixed_filter)?json_encode($fixed_filter):'' ?>'
-        },
-//        beforeSend: function() {
-//            var loadingDiv = $('<div id="loadingDiv">'
-//                    +'<img src="images/hex-loader2.gif" alt="loading">'
-//                    +'</div>');
-//            milos_products_result.prepend(loadingDiv);
-//            loadingDiv.show();
-//        },
-//        complete: function(){
-//            milos_products_result.find('#loadingDiv').remove();
-//        }
+        }
     })
     .done(function( response ) {
         var parsed_reposnse = jQuery.parseJSON(response);
