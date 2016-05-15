@@ -15,14 +15,18 @@
         <script language="javascript" type="text/javascript" src="js/db_visualisation.js"></script>
     </head>
 
-    <body onload="init_db_visualisation('infovis');">
+    <body onload="init_db_visualisation({
+        'canvas_div_id': 'infovis',
+        'onDragEnd': function(node, eventInfo, e){
+        }
+    });">
         <div id="container">
             <div id="center-container">
                 <div id="infovis"></div>    
             </div>
 
             <div id="right-container">
-                <a id="backButton" href="index.php">Back</a>
+                <a id="backButton" href="javascript:visualise_schema();">Back</a>
                 <a href="javascript:downloadPositions()">Download positions</a>
                 <input type="file" id="fileuplaod" onchange="restorePositions(this);"/>
                 <div id="inner-details"></div>

@@ -61,11 +61,16 @@ $jit.ForceDirected.Plot.NodeTypes.implement({
     }
 });
 
-function init_db_visualisation(canvas_div_id)
+function init_db_visualisation(params)
 {
+    if(typeof params.onDragEnd === 'undefined')
+    {
+        params.onDragEnd = function(){};
+    }
+    
     fd = new $jit.ForceDirected({
         //id of the visualization container
-        injectInto: canvas_div_id,
+        injectInto: params.canvas_div_id,
         //Enable zooming and panning
         //with scrolling and DnD
         Navigation: {
@@ -113,32 +118,17 @@ function init_db_visualisation(canvas_div_id)
             onTouchMove: function (node, eventInfo, e) {
                 $jit.util.event.stop(e); //stop default touchmove event
                 this.onDragMove(node, eventInfo, e);
+            },
+            onDragEnd: function(node, eventInfo, e)
+            {
+                params.onDragEnd(node, eventInfo, e);
             }
         },
         //Add Tips
         Tips: {
             enable: true,
             onShow: function (tip, node) {
-                //count connections
-                var count = 0;
-                node.eachAdjacency(function () {
-                    count++;
-                });
-                //display node info in tooltip
-                innerhtml = "<div class=\"tip-title\">" + node.name + "</div>";
-
-                if (typeof node.data.columns !== 'undefined')
-                {
-                    innerhtml += "<div class=\"columns-table-wrapper\"><table><tr><td>name</td><td>type</td></tr>";
-
-                    for (var key in node.data.columns) {
-                        innerhtml += "<tr><td>" + key + "</td><td>" + node.data.columns[key] + "</td></tr>";
-                    }
-
-                    innerhtml += "</table></div>";
-                }
-
-                tip.innerHTML = innerhtml;
+                tip.innerHTML = node.data.tooltip_html;
             }
         },
         //Number of iterations for the FD algorithm
@@ -253,9 +243,16 @@ function visualise_schema(schema_name)
                 $('#backButton').hide();
             }
             
-            cur_json = jQuery.parseJSON(parsed_reposnse.json);
+            cur_json = parsed_reposnse.json;
             
-            initGraph(cur_json);
+            if(cur_json.length === 0)
+            {
+                Log.write("json response empty");
+            }
+            else
+            {
+                initGraph(cur_json);
+            }
         }
     });
 }

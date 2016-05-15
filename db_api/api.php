@@ -2,6 +2,10 @@
 
 //include('mysqldb.php');
 include('pgsqldb.php');
+include('classes/DBNode.php');
+include('classes/DBSchema.php');
+include('classes/DBTable.php');
+include('classes/DBAdjacencie.php');
 
 try 
 {
@@ -29,17 +33,16 @@ try
         
         $have_depth = false;
         $have_back_button = false;
-        $back_button_action = "";
+//        $back_button_action = "";
 
         if(empty($selected_schema))
         {
-            $have_depth = true;
             $json = get_shemas_as_json($db);
         }
         else
         {
             $have_back_button = true;
-            $back_button_action = "javascript:initGraph();";
+//            $back_button_action = "javascript:initGraph();";
             $json = get_schema_tables_as_json($db, $selected_schema);
         }
 
@@ -48,9 +51,8 @@ try
         $response = [
             'status' => 'success',
             'json' => $json,
-            'have_depth' => $have_depth,
             'have_back_button' => $have_back_button,
-            'back_button_action' => $back_button_action
+//            'back_button_action' => $back_button_action
         ];
     }
 
