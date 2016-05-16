@@ -18,6 +18,45 @@
     <body onload="init_db_visualisation({
         'canvas_div_id': 'infovis',
         'onDragEnd': function(node, eventInfo, e){
+        },
+        'onLabelClick': function(node){
+            //set final styles
+            fd.graph.eachNode(function (n) {
+                if (n.id !== node.id)
+                {
+                    delete n.selected;
+                }
+                n.setData('dim', 7, 'end');
+                n.eachAdjacency(function (adj) {
+                    adj.setDataset('end', {
+                        lineWidth: 0.4,
+                        color: '#23a4ff'
+                    });
+                });
+            });
+            if (!node.selected) {
+                node.selected = true;
+                node.setData('dim', 17, 'end');
+                node.eachAdjacency(function (adj) {
+                    adj.setDataset('end', {
+                        lineWidth: 3,
+                        color: '#36acfb'
+                    });
+                });
+            } else {
+                delete node.selected;
+            }
+            //trigger animation to final styles
+            fd.fx.animate({
+                modes: ['node-property:dim',
+                    'edge-property:lineWidth:color'],
+                duration: 500
+            });
+            // Build the right column relations list.
+            // This is done by traversing the clicked node connections.
+
+            //append connections information
+            $jit.id('inner-details').innerHTML = node.data.display_html;
         }
     });">
         <div id="container">

@@ -65,9 +65,11 @@ EOF;
             $dbnodes[$schema_name] = $schemaObj;
         }
         
-        $adjacencie = new DBAdjacencie($schema_name, $foreign_schema_name);
-        
-        $schemaObj->addAdjacencie($adjacencie);
+        if(!empty($foreign_schema_name))
+        {
+            $adjacencie = new DBAdjacencie($schema_name, $foreign_schema_name);
+            $schemaObj->addAdjacencie($adjacencie);
+        }
     }
     
     $result = parse_db_nodes($dbnodes);
